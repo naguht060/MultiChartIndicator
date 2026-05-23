@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MultiChartAnalysis — Live Trading Dashboard</title>
+  <meta name="description" content="A configurable multi-pane live trading dashboard with Hyperliquid crypto charts and Indian stock charts powered by yfinance." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════ TOP HEADER BAR ═══════════════════ -->
+  <header class="topbar" role="banner">
+    <div class="topbar-brand">
+      <span class="brand-icon">📈</span>
+      <span class="brand-name">MultiChart<span class="brand-accent">Analysis</span></span>
+    </div>
+
+    <div class="topbar-controls">
+      <div class="control-group" id="chart-count-group">
+        <label class="control-label" for="chart-count-select">Charts</label>
+        <div class="segmented-control" id="chart-count-select" role="group" aria-label="Number of charts">
+          <button class="seg-btn" data-count="1" id="seg-1">1</button>
+          <button class="seg-btn" data-count="2" id="seg-2">2</button>
+          <button class="seg-btn active" data-count="4" id="seg-4">4</button>
+          <button class="seg-btn" data-count="6" id="seg-6">6</button>
+          <button class="seg-btn" data-count="8" id="seg-8">8</button>
+        </div>
+      </div>
+
+      <div class="topbar-status">
+        <span class="status-dot" id="status-dot"></span>
+        <span class="status-text" id="status-text">Connecting…</span>
+        <span class="clock" id="clock"></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════ CHART GRID ═══════════════════ -->
+  <main class="dashboard" role="main">
+    <div class="chart-grid" id="chart-grid">
+      <!-- ChartPane instances are injected here by main.js -->
+    </div>
+  </main>
+
+  <!-- ═══════════════════ PANE TEMPLATE ═══════════════════ -->
+  <template id="pane-template">
+    <div class="chart-pane" role="region" aria-label="Chart pane">
+      <!-- Ticker bar -->
+      <div class="ticker-bar">
+        <div class="ticker-left">
+          <span class="ticker-symbol">—</span>
+          <span class="ticker-exchange"></span>
+        </div>
+        <div class="ticker-right">
+          <span class="ticker-price">—</span>
+          <span class="ticker-change">—</span>
+          <span class="ticker-badge">LIVE</span>
+        </div>
+      </div>
+
+      <!-- Pane controls -->
+      <div class="pane-controls">
+        <div class="pane-select-wrap">
+          <label class="sr-only">Symbol</label>
+          <select class="pane-select symbol-select" aria-label="Symbol"></select>
+        </div>
+        <div class="pane-select-wrap">
+          <label class="sr-only">Timeframe</label>
+          <select class="pane-select tf-select" aria-label="Timeframe">
+            <option value="1m">1m</option>
+            <option value="5m" selected>5m</option>
+            <option value="15m">15m</option>
+            <option value="30m">30m</option>
+            <option value="1h">1h</option>
+            <option value="4h">4h</option>
+            <option value="1d">1D</option>
+            <option value="1wk">1W</option>
+          </select>
+        </div>
+        <div class="pane-badge source-badge">—</div>
+        <button class="pane-btn refresh-btn" title="Refresh chart" aria-label="Refresh chart">↻</button>
+      </div>
+
+      <!-- Chart container -->
+      <div class="chart-container"></div>
+
+      <!-- Loading overlay -->
+      <div class="pane-overlay">
+        <div class="loader-ring"></div>
+        <span class="loader-text">Loading…</span>
+      </div>
+    </div>
+  </template>
+
+  <!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+  <!-- Lightweight Charts v4 standalone build -->
+  <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
+  <script src="/static/js/hyperliquid.js"></script>
+  <script src="/static/js/chartPane.js"></script>
+  <script src="/static/js/main.js"></script>
+</body>
+</html>
