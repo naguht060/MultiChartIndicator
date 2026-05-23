@@ -20,6 +20,17 @@
     </div>
 
     <div class="topbar-controls">
+      <div class="control-group" id="data-source-group">
+        <label class="control-label" for="data-source-select">Source</label>
+        <div class="pane-select-wrap">
+          <select class="pane-select" id="data-source-select" aria-label="Data source">
+            <option value="hyperliquid">Hyperliquid (Crypto)</option>
+            <option value="yahoo_us">Yahoo Finance (US Stocks)</option>
+            <option value="yahoo_india" selected>Yahoo Finance (India)</option>
+          </select>
+        </div>
+      </div>
+
       <div class="control-group" id="chart-count-group">
         <label class="control-label" for="chart-count-select">Charts</label>
         <div class="segmented-control" id="chart-count-select" role="group" aria-label="Number of charts">
@@ -80,6 +91,13 @@
             <option value="1d">1D</option>
             <option value="1wk">1W</option>
           </select>
+        </div>
+        <div class="pane-select-wrap indicator-select-wrap">
+          <label class="sr-only">Indicators</label>
+          <button class="pane-btn indicator-btn" type="button" aria-label="Toggle indicators">INDICATORS</button>
+          <div class="indicator-panel" aria-hidden="true">
+            <div class="indicator-panel-inner"></div>
+          </div>
         </div>
         <div class="pane-badge source-badge">—</div>
         <button class="pane-btn refresh-btn" title="Refresh chart" aria-label="Refresh chart">↻</button>

@@ -41,6 +41,10 @@ STOCK_SYMBOLS = [
     "COALINDIA.NS",
 ]
 
+US_STOCK_SYMBOLS = [
+    "AAPL", "MSFT", "AMZN", "GOOGL", "TSLA", "NVDA", "META", "NFLX", "JPM", "BRK-B",
+]
+
 # Timeframe config: yfinance interval → best period to fetch
 YFINANCE_PERIOD_MAP = {
     "1m":  ("1m",  "1d"),
@@ -256,4 +260,5 @@ def get_available_symbols() -> dict:
     return {
         "crypto": CRYPTO_SYMBOLS,
         "stocks": STOCK_SYMBOLS,
+        "usStocks": US_STOCK_SYMBOLS,
     }

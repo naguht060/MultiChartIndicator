@@ -17,6 +17,7 @@
 
   // ── DOM refs ─────────────────────────────────────────────
   const grid       = document.getElementById('chart-grid');
+  const sourceSelect = document.getElementById('data-source-select');
   const segBtns    = document.querySelectorAll('.seg-btn');
   const statusDot  = document.getElementById('status-dot');
   const statusText = document.getElementById('status-text');
@@ -24,29 +25,33 @@
 
   // ── State ─────────────────────────────────────────────────
   let panes       = [];   // Array of ChartPane instances
-  let symbols     = { crypto: [], stocks: [] };
+  let symbols     = { crypto: [], stocks: [], usStocks: [] };
   let chartCount  = DEFAULT_COUNT;
+  let dataSource  = 'yahoo_india';
 
   // ── Symbol fetch ──────────────────────────────────────────
   try {
     const resp = await fetch('/api/symbols');
     if (resp.ok) symbols = await resp.json();
   } catch (e) {
-    console.warn('[main] Could not fetch symbols, using fallback');
+    console.warn('[main] Could not fetch symbols; symbol lists will remain empty');
     symbols = {
-      crypto: ['BTC', 'ETH', 'SOL', 'AVAX', 'DOGE', 'BNB', 'ARB', 'OP', 'SUI', 'APT', 'INJ'],
-      stocks: ['RELIANCE.NS', 'TCS.NS', 'INFY.NS', 'HDFCBANK.NS', 'ICICIBANK.NS',
-               'WIPRO.NS', 'SBIN.NS', 'AXISBANK.NS', 'BHARTIARTL.NS', 'LT.NS'],
+      crypto: [],
+      stocks: [],
+      usStocks: [],
     };
   }
 
   // ── Restore saved count ───────────────────────────────────
   const saved = parseInt(localStorage.getItem(STORAGE_KEY), 10);
   if (VALID_COUNTS.includes(saved)) chartCount = saved;
+  const savedSource = localStorage.getItem('mca_dataSource');
+  if (['hyperliquid', 'yahoo_us', 'yahoo_india'].includes(savedSource)) dataSource = savedSource;
+  sourceSelect.value = dataSource;
 
   // ── Grid builder ──────────────────────────────────────────
 
-  function buildGrid(count) {
+  function buildGrid(count, source) {
     // Destroy existing panes
     panes.forEach(p => p.destroy());
     panes = [];
@@ -74,7 +79,7 @@
       grid.appendChild(paneEl);
 
       // Create ChartPane instance for the now-attached element
-      const pane = new ChartPane(paneEl, symbols, i);
+      const pane = new ChartPane(paneEl, symbols, i, source);
       panes.push(pane);
     }
   }
@@ -89,8 +94,14 @@
       btn.classList.toggle('active', parseInt(btn.dataset.count, 10) === count);
     });
 
-    buildGrid(count);
+    buildGrid(count, dataSource);
   }
+
+  sourceSelect.addEventListener('change', () => {
+    dataSource = sourceSelect.value;
+    localStorage.setItem('mca_dataSource', dataSource);
+    buildGrid(chartCount, dataSource);
+  });
 
   segBtns.forEach(btn => {
     btn.addEventListener('click', () => {
